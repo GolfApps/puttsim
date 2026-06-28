@@ -1,5 +1,4 @@
 
-import streamlit as st
 import numpy as np
 import streamlit as st
 from streamlit_mic_recorder import speech_to_text
@@ -7,10 +6,10 @@ from streamlit_mic_recorder import speech_to_text
 # 1. Initialize all 4 controls in a dictionary
 if 'sim_params' not in st.session_state:
     st.session_state.sim_params = {
-        "Speed": 10.0,
+        "Length": 10.0,
         "Slope": 0.0,
-        "Friction": 0.5,
-        "Hardness": 1.0
+        "Speed": 0.5,
+        "Firmness": 1.0
     }
 
 st.title("PuttSim - Multi-Control")
@@ -39,7 +38,6 @@ for i, (key, value) in enumerate(st.session_state.sim_params.items()):
 # --- Main App: The Simulation ---
 st.title("PuttSim")
 st.write(f"Current Green Speed: {st.session_state.green_speed}")
-
 
 # --- PAGE CONFIG ---
 st.set_page_config(page_title="PuttAlign", page_icon="⛳")

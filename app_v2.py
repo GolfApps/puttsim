@@ -16,6 +16,19 @@ elif st.session_state.length > 50.0:
 
 # 3. Update the slider definition to match
 st.slider("Distance", 5.0, 50.0, key='length')
+
+# 1. Update the initialization logic to include the new range
+if 'length' not in st.session_state:
+    st.session_state.length = 5.0 # Start at the minimum
+
+# 2. Add a safety check to ensure it stays in bounds (5 to 50)
+if st.session_state.length < 5.0:
+    st.session_state.length = 5.0
+elif st.session_state.length > 50.0:
+    st.session_state.length = 50.0
+
+# 3. Update the slider definition to match
+st.slider("Distance", 5.0, 50.0, key='length')
 # 1. Initialize ALL variables in session_state
 defaults = {"length": 10, "speed": 10.0, "slope": 0.0, "firmness": 6.0}
 for key, value in defaults.items():

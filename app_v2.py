@@ -35,10 +35,6 @@ cols = st.columns(4)
 for i, (key, value) in enumerate(st.session_state.sim_params.items()):
     cols[i].metric(key, value)
     
-# --- Main App: The Simulation ---
-st.title("PuttSim")
-st.write(f"Current Green Speed: {st.session_state.green_speed}")
-
 # --- PAGE CONFIG ---
 st.set_page_config(page_title="PuttAlign", page_icon="⛳")
 

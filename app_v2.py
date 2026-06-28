@@ -1,34 +1,41 @@
 
 import streamlit as st
 import numpy as np
+import streamlit as st
 from streamlit_mic_recorder import speech_to_text
 
-if 'green_speed' not in st.session_state:
-    st.session_state.green_speed = 10.0
+# 1. Initialize all 4 controls in a dictionary
+if 'sim_params' not in st.session_state:
+    st.session_state.sim_params = {
+        "Speed": 10.0,
+        "Slope": 0.0,
+        "Friction": 0.5,
+        "Hardness": 1.0
+    }
 
-st.title("PuttSim - Debug Mode")
+st.title("PuttSim - Multi-Control")
 
-# The Voice Component
-voice_input = speech_to_text(language='en', start_prompt="🎙️ Update Speed", stop_prompt="Stop")
+# 2. Sidebar for Voice Input
+# We use a selectbox to tell the app WHICH parameter we are updating
+param_to_update = st.sidebar.selectbox("Select Parameter to Update", list(st.session_state.sim_params.keys()))
 
-# 1. VISUAL DEBUGGING: Show us the raw data
-st.write("---")
-st.write(f"Raw Voice Input Received: '{voice_input}'")
+voice_input = speech_to_text(language='en', start_prompt=f"🎙️ Set {param_to_update}", stop_prompt="Stop")
 
-# 2. TRANSLATION LOGIC
+# 3. Smart Update Logic
 if voice_input:
-    # Remove any extra spaces or casing issues
-    clean_input = voice_input.strip().lower()
-    
     try:
-        # Attempt to convert to float
-        st.session_state.green_speed = float(clean_input)
-        st.success(f"Successfully converted '{clean_input}' to {st.session_state.green_speed}")
+        new_val = float(voice_input)
+        st.session_state.sim_params[param_to_update] = new_val
+        st.success(f"Updated {param_to_update} to {new_val}")
     except ValueError:
-        # This triggers if you say something like "ten" instead of "10"
-        st.error(f"Translation Error: Could not convert '{clean_input}' to a number. Please say a digit like '10' or '9.5'.")
+        st.error(f"Could not parse '{voice_input}' as a number.")
 
-st.write(f"### Current Green Speed: {st.session_state.green_speed}")
+# 4. Display all current values
+st.write("### Current Simulation Parameters")
+cols = st.columns(4)
+for i, (key, value) in enumerate(st.session_state.sim_params.items()):
+    cols[i].metric(key, value)
+    
 # --- Main App: The Simulation ---
 st.title("PuttSim")
 st.write(f"Current Green Speed: {st.session_state.green_speed}")

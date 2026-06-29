@@ -10,9 +10,13 @@ st.markdown("Calculate your break angle instantly.")
 # --- SIDEBAR INPUTS ---
 st.sidebar.header("Green Conditions")
 distance_ft = st.sidebar.slider("Distance (ft)", 5, 50, 6)
-slope_percent = st.sidebar.slider("Side Slope (%)", 0.5, 4.0, 1.0, 0.5)
+slope_percent = st.sidebar.slider("Side Slope (%)", 0.5, 5.0, 1.0, 0.5)
 stimp_speed = st.sidebar.slider("Green Speed", 1, 20, 9)
-past_hole_inches = st.sidebar.number_input("Past Hole (inches)", 0, 12, 6)
+pace = st.sidebar.selectbox("Putt Pace:",("Die", "Hole", "Make"))
+
+if pace == "Die": past_hole_inches = 4
+if pace == "Hole": past_hole_inches = 8
+if pace == "Make": past_hole_inches = 12
 
 # --- PHYSICS LOGIC ---
 def calculate_angle(d, s, stimp, past_in):
@@ -36,4 +40,6 @@ angle = calculate_angle(distance_ft, slope_percent, stimp_speed, past_hole_inche
 
 st.divider()
 st.metric(label="Required Aim Angle", value=f"{angle}°")
-st.info(f"Targeting {distance_ft}ft putt with {slope_percent}% slope at Green Speed of {stimp_speed}.")
+st.info(f"Targeting {distance_ft}ft putt with {slope_percent}% slope at Green Speed of {stimp_speed} with {pace} speed.")
+
+# --- Updates to selectbox for pace and updates info box -- 6.29.2026

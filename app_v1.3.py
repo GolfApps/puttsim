@@ -1,6 +1,72 @@
 import streamlit as st
 import numpy as np
 
+def golf_course_reconnect_guard():
+    st.components.v1.html(
+        """
+        <div id="reconnect-overlay" style="
+            display: none; 
+            position: fixed; 
+            top: 0; left: 0; width: 100%; height: 100%; 
+            background-color: #1e293b; /* Dark slate blue/green golf vibe */
+            color: white; 
+            z-index: 999999; 
+            justify-content: center; 
+            align-items: center; 
+            flex-direction: column;
+            font-family: sans-serif;
+        ">
+            <h2 style="margin-bottom: 10px;">⛳ Connecting to PuttAlign...</h2>
+            <p style="color: #94a3b8;">Waking up GPS and cell signal...</p>
+            <div style="
+                border: 4px solid #f3f3f3; 
+                border-top: 4px solid #10b981; 
+                border-radius: 50%; 
+                width: 30px; height: 30px; 
+                animation: spin 1s linear infinite;
+                margin-top: 15px;
+            "></div>
+            <style>
+                @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+            </style>
+        </div>
+
+        <script>
+        const overlay = document.getElementById('reconnect-overlay');
+        
+        // Track when the phone goes to sleep / wakes up
+        document.addEventListener('visibilitychange', () => {
+            if (document.visibilityState === 'visible') {
+                // Show the clean custom loading overlay immediately upon unlocking
+                overlay.style.display = 'flex';
+                
+                // Give the cell antenna 3.5 seconds to settle down, then check connection
+                setTimeout(() => {
+                    overlay.style.display = 'none';
+                }, 3500);
+            }
+        });
+        
+        // Secondary check: detect gaps in time (tucking phone in pocket)
+        let lastTime = Date.now();
+        setInterval(() => {
+            let currentTime = Date.now();
+            if (currentTime - lastTime > 4000) { 
+                // If more than 4 seconds passed in a 2-second interval, the phone was asleep
+                overlay.style.display = 'flex';
+                setTimeout(() => { overlay.style.display = 'none'; }, 3500);
+            }
+            lastTime = currentTime;
+        }, 2000);
+        </script>
+        """,
+        height=0,
+    )
+
+# Call it immediately at launch
+golf_course_reconnect_guard()
+
+
 # --- PAGE CONFIG ---
 st.set_page_config(page_title="PuttAlign", page_icon="⛳")
 

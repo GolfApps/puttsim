@@ -78,7 +78,7 @@ st.sidebar.header("Green Conditions")
 distance_ft = st.sidebar.slider("Distance (ft)", 5, 50, 10)
 slope_percent = st.sidebar.slider("Side Slope (%)", 0.5, 5.0, 1.0, 0.5)
 base_speed = st.sidebar.slider("Green Speed", 1.0, 20.0, 10.0, 0.5)
-elevation = st.sidebar.slider("🔻 Downhill -------------(%)----------------- Uphill🔺",-5.0,5.0,0.0,0.5)
+elevation = st.sidebar.slider("🔻 Downhill -------------(%)--------------- Uphill🔺",-5.0,5.0,0.0,0.5)
 pace = st.sidebar.selectbox("Putt Pace:",("Holing speed", "Die speed", "Make speed"))
 
 spd_adj = 1.2
